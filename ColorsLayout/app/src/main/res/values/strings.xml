@@ -1,0 +1,6 @@
+<resources>
+    <string name="app_name">Colors Layout</string>
+    <string name="visit_type">Visit Type:</string>
+    <string name="social">Social</string>
+    <string name="last_name">Last Name:</string>
+</resources>
