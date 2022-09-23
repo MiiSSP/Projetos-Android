@@ -1,0 +1,8 @@
+<resources>
+    <string name="app_name">Dice App</string>
+    <string name="dice_6">Dice 6</string>
+    <string name="dice_12">Dice 12</string>
+    <string name="dice_20">Dice 20</string>
+    <string name="dice_game">DICE GAME</string>
+    <string name="todo">TODO</string>
+</resources>
