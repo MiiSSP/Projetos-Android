@@ -5,6 +5,7 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.gen.todo.databinding.CardLayoutBinding
 import com.gen.todo.model.Tarefa
+import java.text.SimpleDateFormat
 
 class TarefaAdapter: RecyclerView.Adapter<TarefaAdapter.TarefaViewHolder>()
 {
@@ -23,7 +24,9 @@ class TarefaAdapter: RecyclerView.Adapter<TarefaAdapter.TarefaViewHolder>()
         holder.binding.textNome.text = tarefa.nome
         holder.binding.textDescricao.text = tarefa.descricao
         holder.binding.textResponsavel.text = tarefa.responsavel
-        holder.binding.textData.text = tarefa.data
+        val formatter = SimpleDateFormat("yyyy-mm-dd")
+        val date = formatter.parse(tarefa.data)
+        holder.binding.textData.text = formatter.format(date!!)
         holder.binding.Switch.isChecked = tarefa.status
         holder.binding.textCategoria.text = tarefa.categoria.descricao
     }
