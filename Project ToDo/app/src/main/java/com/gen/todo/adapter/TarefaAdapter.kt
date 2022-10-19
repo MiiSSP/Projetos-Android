@@ -1,13 +1,22 @@
 package com.gen.todo.adapter
 
+import android.app.AlertDialog
+import android.content.Context
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
+import com.gen.todo.MainViewModel
 import com.gen.todo.databinding.CardLayoutBinding
 import com.gen.todo.model.Tarefa
 import java.text.SimpleDateFormat
 
-class TarefaAdapter: RecyclerView.Adapter<TarefaAdapter.TarefaViewHolder>()
+class TarefaAdapter(
+
+    val taskClickListener: TaskClickListener,
+    val mainViewModel: MainViewModel,
+    val context: Context
+
+): RecyclerView.Adapter<TarefaAdapter.TarefaViewHolder>()
 {
     private var listTarefa = emptyList<Tarefa>()
 
@@ -29,6 +38,20 @@ class TarefaAdapter: RecyclerView.Adapter<TarefaAdapter.TarefaViewHolder>()
         holder.binding.textData.text = formatter.format(date!!)
         holder.binding.Switch.isChecked = tarefa.status
         holder.binding.textCategoria.text = tarefa.categoria.descricao
+
+        holder.itemView.setOnClickListener{
+            taskClickListener.onTaskClickListener(tarefa)
+        }
+
+        holder.binding.Switch
+            .setOnCheckedChangeListener { compoundButton, ativo ->
+                tarefa.status = ativo
+                mainViewModel.updateTarefa(tarefa)
+            }
+
+        holder.binding.buttonDelete.setOnClickListener{
+            showAlertDialog(tarefa.id)
+        }
     }
 
     override fun getItemCount(): Int {
@@ -36,9 +59,20 @@ class TarefaAdapter: RecyclerView.Adapter<TarefaAdapter.TarefaViewHolder>()
     }
 
     fun setList(list: List<Tarefa>){
-        listTarefa = list
+        listTarefa = list.sortedByDescending { it.id }
         notifyDataSetChanged()
     }
 
+   private fun showAlertDialog(id: Long){
+       AlertDialog.Builder(context)
+           .setTitle("Excluir Tarefa")
+           .setMessage("Realmente deseja excluir a tarefa??")
+           .setPositiveButton("Sim"){
+               _,_ -> mainViewModel.deleteTarefa(id)
+           }
+           .setNegativeButton("Não"){
+               _,_ ->
+           }.show()
+    }
 }
 
